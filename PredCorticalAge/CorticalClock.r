@@ -2,7 +2,7 @@
 ###   This function is used for predicting DNA methylation age in cortical samples                                    ###
 ###   It was built using cortical DNA methylation array data (Illumina 450K, EPIC)                                    ###       
 ###   Coefficients of the predictor are based on 1037 multi-region cortical training samples		                      ###
-###	  Age predictors were identified using elastic net regression (glmnet in R) - methodology adapted from:           ###
+###	  Age predictors were identified using elastic net regression (glmnet in R) - methodology based on:               ###
 ###            Horvath, S. (2013). DNA methylation age of human tissues and cell types. Genome biology, 14(10), 3156. ###                                        ###
 ###	  Author: Gemma Shireby                                                                                           ###
 ###   Email: gs470@exeter.ac.uk				                                                                                ###
