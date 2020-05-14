@@ -36,13 +36,14 @@ CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=
   #########################################################
   
   braincoef<-read.table(paste0(dir,"CorticalClockCoefs.txt",sep=""),stringsAsFactor=F,header=T)
+  braincoef$probe<-as.character(braincoef$probe)
   
   #########################################################
   ### find the overlap between the probes and your data ###
   #########################################################
   
   overlap<-braincoef[which(braincoef$probe %in% rownames(betas)),]
-  if (length(overlap) < nrow(braincoef) ){
+  if (nrow(overlap) < nrow(braincoef) ){
     print("some probes are missing, we will need to impute values here - the final predictions will be less accurate")
   } else {
     print("all the probes overlap between your data and the clock probes - no need for imputing missing values")
