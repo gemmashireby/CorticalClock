@@ -5,35 +5,17 @@
 ############ based on methodology first used by S. Horvath (Horvath, S. (2013). DNA methylation age of human tissues and cell types. Genome biology, 14(10), 3156)
 
 ## LOAD LIBRARIES
-#install.packages("glmnet")
 library(glmnet)
 
 ### LOAD DATA 
-setwd("/mnt/data1/Gemma/Brain_clock/Age_prediction/Brain_epigenetic_clock/all_sample_clock/")
-load("BigBrain_LBB2_ROSMAP_Jaffe_betas_dasen_pheno.rdat") # pheno betas.dasen
+setwd("")
+load("data.rdat") # pheno betas.dasen
 dim(pheno) # 1397    6
 dim(betas.dasen) # 383547   1397
 
-
-## Get random sample 
-# set.seed(101) # Set Seed so that same sample can be reproduced in future
-# sample = sample.split(pheno$Sentrix_Full, SplitRatio = .75) # Selecting 75% of data as sample from total 'n' rows of the data
-# train = subset(pheno, sample == TRUE)
-# dim(train) # n = 1047    
-# summary(as.factor(train$Sex))
-# # F   M 
-# # 362 685 
-# test  = subset(pheno, sample == FALSE)
-# dim(test) # n = 350   
-# summary(as.factor(test$Sex))
-# # F   M 
-# # 144 206 
-# write.csv(train, "Brain_clock_all_450K_brain_data_training_sample.csv", row.names=F)
-# write.csv(test, "Brain_clock_all_450K_brain_data_testing_sample.csv", row.names=F)
-
 ################### READ IN TRAINING
 
-train<-read.csv("Brain_clock_all_450K_brain_data_training_sample.csv")
+train<-read.csv("training_sample.csv")
 
 ### get some details on the sample
 phenoTrain<-pheno[which(pheno$Sentrix_Full %in% train$Sentrix_Full),]
@@ -43,7 +25,7 @@ summary(as.factor(phenoTrain$BrainBank))
 
 ################### READ IN TESTING
 
-test<-read.csv("Brain_clock_all_450K_brain_data_testing_sample.csv")
+test<-read.csv("testing_sample.csv")
 ## get some details on the samples 
 
 phenoTest<-pheno[which(pheno$Sentrix_Full %in% test$Sentrix_Full ),]
@@ -51,7 +33,7 @@ summary(as.factor(phenoTest$BrainRegion))
 summary(as.factor(phenoTest$BrainBank))
 
 
-pdf("figures/Histogram testing ages.pdf", width=8, height=6)
+pdf("figures/Histogram_testing ages.pdf", width=8, height=6)
 hist(test$Age, xlab="Age",main="Testing Ages Distribution")
 dev.off()
 
@@ -117,8 +99,8 @@ DNAmAgeBrainTraining[,1]<-anti.trafo(DNAmAgeBrainTraining[,1])
 DNAmAgeBrainTesting[,1]<-anti.trafo(DNAmAgeBrainTesting[,1])
 
 # 
-write.csv(DNAmAgeBrainTraining,"BB_LBB2_Jaffe_ROSMAP_anti_traf_training_age_prediction.csv", row.names=F)
-write.csv(DNAmAgeBrainTesting,"BB_LBB2_Jaffe_ROSMAP_anti_traf_testing_age_prediction.csv", row.names=F)
+write.csv(DNAmAgeBrainTraining,"filename.csv", row.names=F)
+write.csv(DNAmAgeBrainTesting,"filenamen.csv", row.names=F)
 
 
 #################################################################################################################
@@ -137,4 +119,4 @@ tmp_coeffs <- coef(glmnet.Training.CV, s = "lambda.min")
 myCoeff<-data.frame(name = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x)
 dim(myCoeff) # 348   2 (347 DNAm probes + intercept)
 head(myCoeff) 
-write.table(myCoeff,"Brain_clock_BB_Jaffe_LBB2_ROSMAP_coefficients.txt", row.names=F, col.names=T, quote=F)
+write.table(myCoeff,"file.txt", row.names=F, col.names=T, quote=F)
