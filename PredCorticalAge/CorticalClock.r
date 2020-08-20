@@ -11,9 +11,9 @@
 
 
 CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=IDs)
-                        pheno, ##  pheno file = file with IDs that match betas and Age col (just 2 columns)
+                        pheno, ##  pheno file = file which contains IDs that match betas IDs and  contains actual Age col 
                         dir, ## directory where the ref file and coeffecients are saved 
-                        IDcol, ## ID column which matches Betas
+                        IDcol, ## ID column which matches Betas IDs for your samples
                         Agecol){  ## Age column 
                         
     ## subset pheno                    
