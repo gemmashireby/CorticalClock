@@ -87,7 +87,7 @@ write.csv(DNAmAgeBrainTesting,"filenamen.csv", row.names=F)
 ################################# SAVE  #########################################################################
 #################################################################################################################
 
-save(glmnet.Training,lambda.glmnet.Training,  file = "BB_LBB2_Jaffe_ROSMAP_age0plus_age0-20AgeT.rda")
+save(glmnet.Training,lambda.glmnet.Training,  file = "file.rda")
 lambda.glmnet.Training # 0.02138613
 
 
