@@ -2,7 +2,7 @@
 ###   This function is used for predicting DNA methylation age in cortical samples                                    ###
 ###   It was built using cortical DNA methylation array data (Illumina 450K, EPIC)                                    ###       
 ###   Coefficients of the predictor are based on 1037 multi-region cortical training samples		                      ###
-###	  Age predictors were identified using elastic net regression (glmnet in R) - methodology based on:               ###
+###	  Age predictors were identified using elastic net regression (glmnet in R) - methodology adapted from:           ###
 ###            Horvath, S. (2013). DNA methylation age of human tissues and cell types. Genome biology, 14(10), 3156. ###                                        ###
 ###	  Author: Gemma Shireby                                                                                           ###
 ###   Email: gs470@exeter.ac.uk				                                                                                ###
@@ -12,9 +12,14 @@
 
 CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=IDs)
                         pheno, ##  pheno file = file with IDs that match betas and Age col (just 2 columns)
-                        dir){  ## directory where the ref file and coeffecients are saved 
+                        dir, ## directory where the ref file and coeffecients are saved 
+                        IDcol, ## ID column which matches Betas
+                        Agecol){  ## Age column 
+                        
+    ## subset pheno                    
+    pheno<-pheno[c(IDcol,Agecol)]
+    colnames(pheno)<-c("ID","Age")                 
  
-  
   ## check ggplot2 is loaded - if not, load, if not installd then install
   pkgTest <- function(x)
   {
@@ -114,7 +119,7 @@ CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=
     #################################################
     pheno<-pheno[match(colnames(betas), pheno$ID),]
     pheno$brainpred<-as.numeric(brainpred)
-    write.csv(brainpred, "CorticalPred.csv")
+    write.csv(pheno, "CorticalPred.csv")
     
     ## if not impuation for missing values:
     
@@ -142,7 +147,7 @@ CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=
     pheno<-pheno[match(colnames(betas), pheno$ID),]
     pheno$brainpred<-as.numeric(brainpred)
     pheno$Age<-as.numeric(pheno$Age)
-    write.csv(brainpred, "CorticalPred.csv")
+    write.csv(pheno, "CorticalPred.csv")
     
   }
   
@@ -153,7 +158,10 @@ CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=
     colnames(data)<-c("ID","Age","Cortical Clock")
     data<-data[complete.cases(data$Age),]
     corr<-round(cor(data[,2],data[,3]),2) ## correlation - pearsons r
-    rmse<-round(sqrt(mean(data[,2]-data[,3])^2),2) ## root mean squared error (years)
+    RMSE<-function(actualAge,estimatedAge){ ## root mean squared error (years)
+          sqrt(mean((actualAge-estimatedAge)^2))
+            }   
+    rmse<-round(RMSE(data[,2],data[,3]),2)
     mad<-round(median(abs(data[,2]-data[,3])),2) ## mean absoluate deviation (years)
     stats<-matrix(ncol=1,nrow=3)
     colnames(stats)<-c("Cortical Clock")
@@ -199,5 +207,3 @@ CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=
   print("Plot of Cortical DNAm age against age is saved in the file 'CorticalClockplot.pdf'")
   
 }
-
-
