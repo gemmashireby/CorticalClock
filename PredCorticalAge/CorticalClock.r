@@ -54,10 +54,13 @@ CorticalClock<-function(betas, ## betas = betas matrix (rownames=cpgs, colnames=
     print("all the probes overlap between your data and the clock probes - no need for imputing missing values")
   }
   
-  ###################################################################################################################
-  ############# add reference betas to the missing probes (average DNAm across 700 control cortical samples)      ###
-  ### imputation method adapted from:  https://github.com/qzhang314/DNAm-based-age-predictor                      ###
-  ################################################################################################################### 
+  ##############################################################################################################################
+  ############# add reference betas to the missing probes (average DNAm across 700 control cortical samples)                 ###
+  ### imputation method adapted from:  https://github.com/qzhang314/DNAm-based-age-predictor                                 ###
+  ### cite: Zhang, Q., Vallerga, C. L., Walker, R. M., Lin, T., Henders, A. K., Montgomery, G. W., ... & Pitcher, T. (2019). ###
+  ### Improved precision of epigenetic clock estimates across tissues and its implication for biological ageing.             ###
+  ### Genome medicine, 11(1), 1-11.                                                                                          ###
+  ############################################################################################################################## 
   
   if (length(overlap) < nrow(braincoef)) {
     ## transform betas to be cpg in col
