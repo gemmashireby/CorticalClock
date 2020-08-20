@@ -10,36 +10,17 @@ library(glmnet)
 ### LOAD DATA 
 setwd("")
 load("data.rdat") # pheno betas.dasen
-dim(pheno) # 1397    6
-dim(betas.dasen) # 383547   1397
 
 ################### READ IN TRAINING
 
 train<-read.csv("training_sample.csv")
-
-### get some details on the sample
-phenoTrain<-pheno[which(pheno$Sentrix_Full %in% train$Sentrix_Full),]
-summary(as.factor(phenoTrain$BrainRegion))
-
-summary(as.factor(phenoTrain$BrainBank))
 
 ################### READ IN TESTING
 
 test<-read.csv("testing_sample.csv")
 ## get some details on the samples 
 
-phenoTest<-pheno[which(pheno$Sentrix_Full %in% test$Sentrix_Full ),]
-summary(as.factor(phenoTest$BrainRegion))
-summary(as.factor(phenoTest$BrainBank))
 
-
-pdf("figures/Histogram_testing ages.pdf", width=8, height=6)
-hist(test$Age, xlab="Age",main="Testing Ages Distribution")
-dev.off()
-
-pdf("figures/Histogram training ages.pdf", width=8, height=6)
-hist(train$Age, xlab="Age",main="Training Ages Distribution")
-dev.off()
 
 #################################################################################################################
 ######## TRANSFORM YOUNG AGE (to account for the logaritmic relationship from 0-20 years)  ######################
@@ -71,12 +52,11 @@ train$AgeAT<-anti.trafo(train$AgeT)
 
 # training
 betasTrain<-betas.dasen[,match(train$Sentrix_Full, colnames(betas.dasen))]
-dim(betasTrain) # 383547   1047
-betasTrain[1:10,1:10]
+dim(betasTrain) 
 # testing
 betasTest<-betas.dasen[,match(test$Sentrix_Full, colnames(betas.dasen))]
-dim(betasTest) # 383547    350
-betasTest[1:10,1:10]
+dim(betasTest) 
+
 
 #################################################################################################################
 ################################# RUN ELASTIC NET REGRESSION TO GET CLOCK COEFS #################################
