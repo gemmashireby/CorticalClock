@@ -1,4 +1,8 @@
-
-
 Within an R script you need to source the 'CorticalClock.r' script. 
-To run the funcion you will need to input betas, pheno, path to coefficients and ref file, ID column (in pheno, which matches the betas IDs) and Actual age column (from pheno).
+To run the 'CorticalClock()' funcion you will need to input betas, pheno, path to coefficients and ref file, ID column (in pheno, which matches the betas IDs) and Actual age column (from pheno).
+e.g. CorticalClock(betas, pheno, dir,  IDcol, Agecol)
+## betas = betas matrix (rownames=cpgs, colnames=IDs)
+## pheno file = file which contains IDs that match betas IDs and  contains actual Age col 
+## directory where the ref file and coeffecients are saved 
+## ID column which matches Betas IDs for your samples
+## Age column 
